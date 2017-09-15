@@ -1,41 +1,18 @@
-% Batch to generate B0map with Dual Echo Method (DEM) without qMRLab GUI (graphical user interface)
-% Run this script line by line
-% Written by: Ian Gagnon, 2017
+% Example T1 map processing using Inversion Recovery
+% Written by: Ilana Leppert, 2017
 
-%% Load dataset
-
-% Load your parameters to create your Model
-Model = B0_DEM;
-
-%% Check data and fitting (Optional)
+%% Generate T1map
+%**************************************************************************
+% I- Create model instance
+%**************************************************************************
+Model = InversionRecovery;
 
 %**************************************************************************
-% I- GENERATE FILE STRUCT
+% II- LOAD PROTOCOL
 %**************************************************************************
-% Create a struct "file" that contains the NAME of all data's FILES
-% file.DATA = 'DATA_FILE';
-file = struct;
-file.Phase = 'Phase.nii';
-file.Magn = 'Magn.nii';
-
-%**************************************************************************
-% II- CHECK DATA AND FITTING
-%**************************************************************************
-qMRLab(Model,file);
-
-
-%% Create Quantitative Maps
-
-%**************************************************************************
-% I- LOAD PROTOCOL
-%**************************************************************************
-
-% Echo (time in millisec)
-TE2 = 1.92e-3;
-Model.Prot.Time.Mat = TE2;
-
-% Update the model
-Model = Model.UpdateFields;
+% Vector of inversion times
+TI = [350,500,650,800,950,1100]';
+Prot.IRData.Mat = TI;
 
 %**************************************************************************
 % II- LOAD EXPERIMENTAL DATA
@@ -44,8 +21,8 @@ Model = Model.UpdateFields;
 % .MAT file : load('DATA_FILE');
 %             data.DATA = double(DATA);
 % .NII file : data.DATA = double(load_nii_data('DATA_FILE'));
-data.Phase = double(load_nii_data('Phase.nii'));
-data.Magn  = double(load_nii_data('Magn.nii'));
+data.IRData = double(load_nii_data('IRdata-2slices.nii'));
+data.Mask  = double(load_nii_data('Mask-2slices.nii'));
 
 %**************************************************************************
 % III- FIT DATASET
@@ -58,8 +35,8 @@ FitResults.Model = Model;
 %**************************************************************************
 % .MAT file : FitResultsSave_mat(FitResults,folder);
 % .NII file : FitResultsSave_nii(FitResults,fname_copyheader,folder);
-FitResultsSave_nii(FitResults,'Phase.nii');
-%save('Parameters.mat','Model');
+FitResultsSave_nii(FitResults,'Mask-2slices.nii'); % this will save all output files in folder 'FitResults' using the 2nd argument as a template
+% A .mat file called 'FitResults.mat' will also be saved in the 'FitResults' folder, which can be loaded for later use
 
 %% Check the results
 % Load them in qMRLab
