@@ -51,6 +51,8 @@ properties (Hidden=true)
 end
 
     properties
+    
+    % FOO COMMIT #1
         MRIinputs = {'VFAData','B1map','Mask'};
         xnames = {'M0','T1'};
         voxelwise = 0;
