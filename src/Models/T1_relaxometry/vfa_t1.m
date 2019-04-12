@@ -54,7 +54,7 @@ end
         MRIinputs = {'VFAData','B1map','Mask'};
         xnames = {'M0','T1'};
         voxelwise = 0;
-        
+        % THIS IS A LOCAL COMMIT FOO#1. 
         % Protocol
         Prot  = struct('VFAData',struct('Format',{{'FlipAngle' 'TR'}},...
                                          'Mat', [3 0.015; 20 0.015])); % You can define a default protocol here.
