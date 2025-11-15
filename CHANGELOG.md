@@ -18,6 +18,17 @@ All notable changes to this project will be documented in this file.
     - Eliminates dependency on Mapping Toolbox or compiled MEX files
     - Works on all platforms without compilation
 
+- **OSF Data Download**: Fixed HTTP 308 redirect handling
+    - Updated `src/Common/downloadData.m` to properly handle OSF redirects
+    - Added weboptions configuration for reliable downloads
+    - Improved error messages with troubleshooting tips
+    - Added retry progress indicators
+
+### Improvements 🚀
+- **Reduced Warning Spam**: Scroll panel warning now shows only once per session
+    - Improved user experience by suppressing repetitive compatibility warnings
+    - First-time users still get informed about MATLAB R2021+ limitations
+
 ### Documentation 📚
 - Added `MATLAB_COMPATIBILITY_GUIDE.md` - comprehensive guide for MATLAB version compatibility
 - Added `JAVAFRAME_FIX_SUMMARY.md` - quick reference for JavaFrame fixes
