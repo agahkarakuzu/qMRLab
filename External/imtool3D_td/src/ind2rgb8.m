@@ -52,10 +52,11 @@ rgb = zeros(height, width, 3, 'uint8');
 % Map indexed values to RGB using the colormap
 % This is equivalent to ind2rgb but optimized for uint8 output
 for k = 1:3
-    % Create a temporary array for this color channel
-    temp = cmap(ind, k);
-    % Scale from [0,1] to [0,255] and convert to uint8
-    rgb(:, :, k) = uint8(temp * 255);
+    % Get the k-th color channel from colormap
+    channel_values = cmap(:, k);
+    % Use indices to map to RGB values, keeping 2D shape
+    % ind is used as indices into channel_values
+    rgb(:, :, k) = uint8(channel_values(ind) * 255);
 end
 
 end
