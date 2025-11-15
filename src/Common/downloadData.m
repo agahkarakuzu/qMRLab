@@ -40,13 +40,62 @@ while count == err_count
                 if ~SUCCESS, error(MESSAGE); end
             end
         else
-            % Configure options to follow redirects (fixes OSF 308 redirect issue)
-            % weboptions automatically follows redirects in MATLAB
-            options = weboptions('Timeout', 60, ...
-                                'ContentType', 'binary', ...
-                                'CertificateFilename', '');
-            websave(filename, url, options);
-            disp('Data has been downloaded ...');
+            % Try multiple methods to handle OSF redirects (308 status)
+            download_success = false;
+
+            % Method 1: Try system curl (most reliable for redirects)
+            if isunix || ismac
+                try
+                    cmd = ['curl -L -o ' filename ' "' url '"'];
+                    [STATUS, ~] = system(cmd);
+                    if STATUS == 0 && exist(filename, 'file')
+                        download_success = true;
+                        disp('Data has been downloaded using curl...');
+                    end
+                catch
+                    % curl failed, try next method
+                end
+            end
+
+            % Method 2: Try wget if curl failed
+            if ~download_success && (isunix || ismac)
+                try
+                    cmd = ['wget -O ' filename ' "' url '"'];
+                    [STATUS, ~] = system(cmd);
+                    if STATUS == 0 && exist(filename, 'file')
+                        download_success = true;
+                        disp('Data has been downloaded using wget...');
+                    end
+                catch
+                    % wget failed, try next method
+                end
+            end
+
+            % Method 3: Try MATLAB websave with options
+            if ~download_success
+                try
+                    options = weboptions('Timeout', 60, ...
+                                        'ContentType', 'binary', ...
+                                        'CertificateFilename', '');
+                    websave(filename, url, options);
+                    download_success = true;
+                    disp('Data has been downloaded ...');
+                catch
+                    % websave failed, try final method
+                end
+            end
+
+            % Method 4: Try urlwrite (older but sometimes works better)
+            if ~download_success
+                try
+                    urlwrite(url, filename); %#ok<URLWR>
+                    download_success = true;
+                    disp('Data has been downloaded ...');
+                catch ME_final
+                    % All methods failed
+                    error('AllMethodsFailed', ['Could not download using any method: ' ME_final.message]);
+                end
+            end
         end
         
         % UNZIP
