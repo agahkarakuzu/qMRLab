@@ -40,7 +40,12 @@ while count == err_count
                 if ~SUCCESS, error(MESSAGE); end
             end
         else
-            websave(filename,url);
+            % Configure options to follow redirects (fixes OSF 308 redirect issue)
+            % weboptions automatically follows redirects in MATLAB
+            options = weboptions('Timeout', 60, ...
+                                'ContentType', 'binary', ...
+                                'CertificateFilename', '');
+            websave(filename, url, options);
             disp('Data has been downloaded ...');
         end
         
@@ -50,8 +55,16 @@ while count == err_count
     catch ME
         err_count = err_count + 1;
         if err_count>3
-            error(ME.identifier, ['Data cannot be downloaded: ' ME.message]);
+            error(ME.identifier, ['Data cannot be downloaded: ' ME.message ...
+                '\n\nTroubleshooting tips:' ...
+                '\n- Check your internet connection' ...
+                '\n- The OSF server may be temporarily unavailable' ...
+                '\n- Try downloading manually from: ' url ...
+                '\n- Check if a firewall is blocking the connection']);
         end
+        % Wait before retry
+        pause(2);
+        disp(['Download attempt ' num2str(err_count) ' failed. Retrying...']);
     end
     count = count + 1;
 end
