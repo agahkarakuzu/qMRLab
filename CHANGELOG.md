@@ -1,6 +1,21 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Bug Fixes 🐛
+- **MATLAB R2021+ Compatibility**: Fixed JavaFrame deprecation crash
+    - Updated `src/Common/GUI/attachScrollPanelTo.m` with version-safe JavaFrame access
+    - Added try-catch error handling in `qMRLab.m` to prevent GUI crashes
+    - GUI now works on MATLAB R2019b through R2025+ without JavaFrame errors
+    - Scroll bars unavailable in MATLAB R2021+ (graceful degradation)
+    - See `MATLAB_COMPATIBILITY_GUIDE.md` for details and migration strategy
+
+### Documentation 📚
+- Added `MATLAB_COMPATIBILITY_GUIDE.md` - comprehensive guide for MATLAB version compatibility
+- Added `JAVAFRAME_FIX_SUMMARY.md` - quick reference for JavaFrame fixes
+- Documented long-term migration strategy from GUIDE to App Designer
+
 ## Release [2.4.1] - 2020-09-02
 
 ## New ✨
