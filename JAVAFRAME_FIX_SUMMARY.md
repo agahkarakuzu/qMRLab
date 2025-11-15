@@ -25,7 +25,22 @@ jPanel = hPanel.JavaFrame.getGUIDEView;
    - Prevents entire GUI from crashing
    - Shows user-friendly warnings instead
 
-3. **MATLAB_COMPATIBILITY_GUIDE.md** (NEW)
+3. **External/imtool3D_td/src/ind2rgb8.m** (NEW)
+   - Created pure MATLAB fallback for ind2rgb8 MEX function
+   - Eliminates dependency on Mapping Toolbox
+   - Works on all MATLAB versions without compilation
+
+4. **External/dicm2nii/nii_viewer.m**
+   - Fixed JavaFrame usage in drag-and-drop functionality
+   - Added version detection and graceful degradation
+   - Drag-and-drop disabled in MATLAB R2021+ (file loading still works)
+
+5. **External/imtool3D_td/imtool3D_nii.m**
+   - Fixed JavaFrame usage in drag-and-drop feature
+   - Added try-catch blocks with version detection
+   - Non-critical feature gracefully disabled in R2021+
+
+6. **MATLAB_COMPATIBILITY_GUIDE.md** (NEW)
    - Comprehensive documentation of changes
    - Migration strategy for long-term GUIDE replacement
    - Developer guide for maintaining GUI on different MATLAB versions

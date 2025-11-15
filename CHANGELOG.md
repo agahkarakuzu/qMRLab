@@ -7,9 +7,16 @@ All notable changes to this project will be documented in this file.
 - **MATLAB R2021+ Compatibility**: Fixed JavaFrame deprecation crash
     - Updated `src/Common/GUI/attachScrollPanelTo.m` with version-safe JavaFrame access
     - Added try-catch error handling in `qMRLab.m` to prevent GUI crashes
+    - Fixed JavaFrame usage in `External/dicm2nii/nii_viewer.m`
+    - Fixed JavaFrame usage in `External/imtool3D_td/imtool3D_nii.m`
     - GUI now works on MATLAB R2019b through R2025+ without JavaFrame errors
-    - Scroll bars unavailable in MATLAB R2021+ (graceful degradation)
+    - Scroll bars and drag-and-drop unavailable in MATLAB R2021+ (graceful degradation)
     - See `MATLAB_COMPATIBILITY_GUIDE.md` for details and migration strategy
+
+- **Mapping Toolbox Dependency**: Fixed ind2rgb8 requirement
+    - Created pure MATLAB implementation in `External/imtool3D_td/src/ind2rgb8.m`
+    - Eliminates dependency on Mapping Toolbox or compiled MEX files
+    - Works on all platforms without compilation
 
 ### Documentation 📚
 - Added `MATLAB_COMPATIBILITY_GUIDE.md` - comprehensive guide for MATLAB version compatibility
