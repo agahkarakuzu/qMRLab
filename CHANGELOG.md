@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 - **Mapping Toolbox Dependency**: Fixed ind2rgb8 requirement
     - Created pure MATLAB implementation in `External/imtool3D_td/src/ind2rgb8.m`
+    - Fixed array indexing bug causing dimension mismatch errors
     - Eliminates dependency on Mapping Toolbox or compiled MEX files
     - Works on all platforms without compilation
 
