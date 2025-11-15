@@ -20,7 +20,8 @@ All notable changes to this project will be documented in this file.
 
 - **OSF Data Download**: Fixed HTTP 308 redirect handling
     - Updated `src/Common/downloadData.m` to properly handle OSF redirects
-    - Added weboptions configuration for reliable downloads
+    - Implemented waterfall download strategy: curl → wget → websave → urlwrite
+    - Uses system curl/wget for most reliable redirect handling
     - Improved error messages with troubleshooting tips
     - Added retry progress indicators
 
