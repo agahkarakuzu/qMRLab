@@ -129,10 +129,16 @@ function [hScrollPanel, hPanel] = attachScrollPanelTo(hObject)
         % Create a simple container panel as a placeholder
         % This maintains API compatibility but without scroll functionality
         hScrollPanel_ = hPanel;
-        warning('qMRLab:attachScrollPanelTo:NoJavaFrame', ...
-            ['Scroll panel functionality is limited in MATLAB R2021a and newer.\n', ...
-             'JavaFrame has been removed. The panel will be displayed without scroll bars.\n', ...
-             'Consider using the panel without scrolling or migrating to App Designer.']);
+
+        % Show warning only once per MATLAB session
+        persistent warningShown;
+        if isempty(warningShown)
+            warning('qMRLab:attachScrollPanelTo:NoJavaFrame', ...
+                ['Scroll panel functionality is limited in MATLAB R2021a and newer.\n', ...
+                 'JavaFrame has been removed. The panel will be displayed without scroll bars.\n', ...
+                 'Consider using the panel without scrolling or migrating to App Designer.']);
+            warningShown = true;
+        end
     end
 
     drawnow
@@ -244,8 +250,7 @@ function setViewOffset(hScrollPanel, viewOffset)
             hScrollPanel.JavaPeer.repaint;
         catch
             % Silently ignore if Java operations fail
-            warning('qMRLab:attachScrollPanelTo:ViewOffsetUnavailable', ...
-                'ViewOffset setting is not available in MATLAB R2021a and newer.');
+            % (warning suppressed to avoid repetitive messages)
         end
     end
 end
